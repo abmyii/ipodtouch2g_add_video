@@ -5,9 +5,11 @@ import sys
 
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
-# Taken and modified from https://stackoverflow.com/a/23274686
+# Crop taken and modified from https://unix.stackexchange.com/a/192123
+# Other options taken and modified from https://stackoverflow.com/a/23274686
 ffmpeg_opts = '-c:v libx264 -crf 23 -preset fast -profile:v baseline -level 3 \
--refs 6 -vf "scale=480:240,setdar=2:1,format=yuv420p" -c:a copy'
+-vf "scale=(iw*sar)*max(480/(iw*sar)\,240/ih):ih*max(480/(iw*sar)\,240/ih)\
+,crop=480:240,format=yuv420p" -c:a copy -refs 6'
 
 
 # https://www.reddit.com/r/moviepy/comments/2bsnrq/is_it_possible_to_get_the_length_of_a_video/
