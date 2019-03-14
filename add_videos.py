@@ -4,14 +4,39 @@ import os
 import shutil
 import sys
 
-location_db = dataset.connect('sqlite+pysqlite:///iTunes_Control/iTunes/iTunes Library.itlp/Locations.itdb')
-library_db = dataset.connect('sqlite+pysqlite:///iTunes_Control/iTunes/iTunes Library.itlp/Library.itdb')
+from moviepy.video.io.VideoFileClip import VideoFileClip
+
+
+# https://www.reddit.com/r/moviepy/comments/2bsnrq/is_it_possible_to_get_the_length_of_a_video/
+def getVideoLength(filename):
+    return VideoFileClip(filename).duration * 60  # Seconds to milliseconds
+
+
+# Mount IPod
+ipod_mount_path = '/tmp/IPod'
+if not os.path.exists(ipod_mount_path):
+    os.mkdir(ipod_mount_path)
+if not os.listdir(ipod_mount_path):
+    out = os.system('ifuse ' + ipod_mount_path)
+
+# Make "Videos" Folder if necessary
+itunes_path = f'{ipod_mount_path}/iTunes_Control/Music/Videos/'
+if not os.path.isdir(itunes_path):
+    os.mkdir(itunes_path)
+
+itunes_db_path = '{ipod_mount_path}/iTunes_Control/iTunes/iTunes Library.itlp'
+location_db = dataset.connect(
+    f'sqlite+pysqlite://{itunes_db_path}/Locations.itdb'
+)
+library_db = dataset.connect(
+    f'sqlite+pysqlite://{itunes_db_path}/Library.itdb'
+)
 
 for video_path in sys.argv[1:]:
     video_filename = os.path.split(video_path)[1]
 
     # Copy video to necessary location
-    video_location = 'iTunes_Control/Music/Videos/' + video_filename
+    video_location = itunes_path + video_filename
     shutil.copyfile(video_path, video_location)
 
     print(f'Adding {video_filename}')
@@ -30,8 +55,10 @@ for video_path in sys.argv[1:]:
 
     last['pid'] += 1
     last['title'] = os.path.splitext(video_filename)[0]
-    last['total_time_ms'] =
+    last['total_time_ms'] = getVideoLength(video_filename)
 
     # (library database) Add modified item
     library_db['item'].insert(last)
 
+# Unmount IPod
+out = os.system('fusermount -u /tmp/IPod')

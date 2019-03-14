@@ -1,12 +1,12 @@
-Ideas:
-Video timelength
-Mount automatically
-Option to clear modifications (delete all which have "Videos/" in filename)
-Automatically make Videos folder
-Faster way to copy
-
 Only 360p is supported (for IPod Touch 2G)
 
+Ideas:
+Test multiple videos
+
+Future Ideas:
+Interactive "console"
+Option to clear modifications (delete all which have "Videos/" in filename)
+
 Known bugs:
-Searching causes Videos app to crash and reset database to backup.
-Thumbnail doesn't change.
+Searching causes Videos app to crash and reset database to backup
+Thumbnail doesn't change
