@@ -5,7 +5,9 @@ import sys
 
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
-ffmpeg_opts = '-vf scale=-2:360 -c:v libx264 -preset veryfast -c:a aac'
+# Taken and modified from https://stackoverflow.com/a/23274686
+ffmpeg_opts = '-c:v libx264 -crf 23 -preset fast -profile:v baseline -level 3 \
+-refs 6 -vf "scale=480:240,format=yuv420p" -c:a copy'
 
 
 # https://www.reddit.com/r/moviepy/comments/2bsnrq/is_it_possible_to_get_the_length_of_a_video/
@@ -13,7 +15,6 @@ def getVideoLength(filename):
     return VideoFileClip(filename).duration * 1000  # Seconds to milliseconds
 
 
-# https://askubuntu.com/revisions/867858/2
 def convertVideo(video, output):
     return os.system(
         f'ffmpeg -i {video} {ffmpeg_opts} {output}'
