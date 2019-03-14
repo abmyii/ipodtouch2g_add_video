@@ -5,9 +5,19 @@ import sys
 
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
+# Add a cropbox if specified
+cropbox = ''
+if '-crop' in sys.argv:
+    index = sys.argv.index('-crop')
+    cropbox = ',crop=' + sys.argv[index+1]  # Set cropbox
+
+    # Remove args from sys.argv
+    sys.argv.pop(index+1)
+    sys.argv.pop(index)
+
 # Taken and modified from https://stackoverflow.com/a/23274686
 ffmpeg_opts = '-c:v libx264 -crf 23 -preset fast -profile:v baseline -level 3 \
--refs 6 -vf "scale=480:240,format=yuv420p" -c:a copy'
+-refs 6 -vf "scale=480:240,setdar=2:1,format=yuv420p{cropbox}" -c:a copy'
 
 
 # https://www.reddit.com/r/moviepy/comments/2bsnrq/is_it_possible_to_get_the_length_of_a_video/
