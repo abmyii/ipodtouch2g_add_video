@@ -1,12 +1,13 @@
 Only 360p is supported (for IPod Touch 2G)
 
-Ideas:
+TODO:
 Test multiple videos
 
-Future Ideas:
-Interactive "console"
-Option to clear modifications (delete all which have "Videos/" in filename)
+Ideas:
+Interactive "console" (Future)
+Option to clear modifications (delete all which have "Videos/" in filename) (Future)
 
 Known bugs:
 Searching causes Videos app to crash and reset database to backup
 Thumbnail doesn't change
+IFuse doesn't work on udocker so manually mount IPod in /tmp/IPod
