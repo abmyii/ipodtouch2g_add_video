@@ -79,4 +79,4 @@ for video_path in sys.argv[1:]:
 
 # Unmount IPod if the program mounted it
 if mounted:
-    out = os.system('fusermount -u /tmp/IPod')
+    out = os.system(f'fusermount -u "{ipod_mount_path}"')
